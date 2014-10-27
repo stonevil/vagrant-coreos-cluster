@@ -8,10 +8,10 @@ Vagrant.require_version ">= 1.6.5"
 $coreos_channel = "alpha"
 $coreos_version = ">=417.1.0"
 
-$coreos_num_instances = 1
+$coreos_instances = 1
 
 $shared_folder_name = "shared"
-$coreos_expose_docker_tcp=4243
+$coreos_docker_port=4243
 
 COREOS_CLOUD_CONFIG_PATH = File.join(File.dirname(__FILE__), "user-data")
 COREOS_CLOUD_SHARED_PATH = File.join(File.dirname(__FILE__), $shared_folder_name )
@@ -37,23 +37,23 @@ Vagrant.configure("2") do |config|
   end
 
   # Deploy CoreOS cluster
-  (1..$coreos_num_instances).each do |i|
+  (1..$coreos_instances).each do |i|
     config.vm.define vm_name = "core-%02d" % i do |config|
       config.vm.hostname = vm_name
 
       # Expose CoreOS Docker API over TCP
-      if $coreos_expose_docker_tcp
-        port = "#{$coreos_expose_docker_tcp+i-1}"
+      if $coreos_docker_port
+        port = "#{$coreos_docker_port + i - 1}"
         config.vm.network "forwarded_port", guest: 4243, host: port, auto_correct: true
       end
 
       # Configure CoreOS cluster network
-      ip = "172.17.8.#{i+100}"
+      ip = "172.17.8.#{i + 100}"
       config.vm.network :private_network, ip: ip
 
       # Share folder over NFS
       if File.exist?(COREOS_CLOUD_SHARED_PATH)
-        config.vm.synced_folder "#{COREOS_CLOUD_SHARED_PATH}", "/"+$shared_folder_name, id: "core", :nfs => true, :mount_options => ['nolock,vers=3,udp']
+        config.vm.synced_folder "#{COREOS_CLOUD_SHARED_PATH}", "/" + $shared_folder_name, id: "core", :nfs => true, :mount_options => ['nolock,vers=3,udp']
       end
 
       # CoreOS cloud config
