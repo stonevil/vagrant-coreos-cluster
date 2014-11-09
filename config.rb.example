@@ -1,0 +1,33 @@
+# Vagrant vagrant-hostmanager plugin must be installed for support hosts auto-update.
+# Required plugin will be installed automatically.
+# Read more at https://github.com/smdahlen/vagrant-hostmanager
+$hostmanager = true
+
+# Default CoreOS Cluster configuration
+$coreos_channel = 'alpha'
+$coreos_version = '>=493.0.0'
+
+$coreos_instances = 1
+
+$shared_folder_name = false
+
+$coreos_docker_port = 4243
+$coreos_peer_port = 7001
+$coreos_etcd_port = 4001
+
+$coreos_etcd_url = URI('https://discovery.etcd.io/new')
+$coreos_etcd_key = false
+
+# Enable only for debuging purpose. This functionality highly slow down you computer!
+$serial_logging = false
+
+
+# You can add own options for Docker containers provisioning during CoreOS cluster startup
+$docker = <<DOCKER
+images: ["ubuntu"]
+DOCKER
+
+# You can add own script for provisioning during CoreOS cluster startup
+$script = <<SCRIPT
+echo CoreOS cluster ready to use
+SCRIPT
