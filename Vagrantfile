@@ -1,6 +1,12 @@
 # -*- mode: ruby -*-
 # # vi: set ft=ruby :
 
+
+# PLEASE DO NOT CHANGE ANYTHING IN THIS FILE!
+# FOR CHANGES PLEASE CREATE COPY OF THE config.rb.example
+# AND PROVIDE ALL CHANGES TO config.rb
+
+
 # Define required ruby libs
 require 'net/http'
 require 'fileutils'
@@ -14,7 +20,7 @@ Vagrant.require_version '>= 1.6.5'
 # Read more at https://github.com/smdahlen/vagrant-hostmanager
 $hostmanager = false
 
-# Default CoreOS Cluster configuration
+# Default CoreOS Cluster configuration.
 $coreos_channel = 'alpha'
 $coreos_version = '>=493.0.0'
 

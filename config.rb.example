@@ -1,7 +1,16 @@
+# -*- mode: ruby -*-
+# # vi: set ft=ruby :
+
+
+# PLEASE DO NOT CHANGE ANYTHING IN THIS FILE!
+# FOR CHANGES PLEASE CREATE COPY OF THE config.rb.example
+# AND PROVIDE ALL CHANGES TO config.rb
+
+
 # Vagrant vagrant-hostmanager plugin must be installed for support hosts auto-update.
 # Required plugin will be installed automatically.
 # Read more at https://github.com/smdahlen/vagrant-hostmanager
-$hostmanager = true
+$hostmanager = false
 
 # Default CoreOS Cluster configuration
 $coreos_channel = 'alpha'
