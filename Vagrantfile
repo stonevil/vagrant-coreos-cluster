@@ -12,7 +12,7 @@ Vagrant.require_version '>= 1.6.5'
 # Vagrant vagrant-hostmanager plugin must be installed for support hosts auto-update.
 # Required plugin will be installed automatically.
 # Read more at https://github.com/smdahlen/vagrant-hostmanager
-$hostmanager = true
+$hostmanager = false
 
 # Default CoreOS Cluster configuration
 $coreos_channel = 'alpha'
