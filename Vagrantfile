@@ -174,7 +174,8 @@ Vagrant.configure('2') do |config|
       end
 
       # Deploy user-data config file
-      config.vm.provision 'shell', inline: "echo '#{user_data_output}' > /var/lib/coreos-vagrant/vagrantfile-user-data", privileged: true
+        config.vm.provision 'shell', inline: "echo '#{user_data_output}' > /tmp/vagrantfile-user-data", privileged: true
+        config.vm.provision 'shell', inline: "mv /tmp/vagrantfile-user-data /var/lib/coreos-vagrant/", privileged: true
       # Docker provisioning
       config.vm.provision 'docker' do |d|
         $docker
