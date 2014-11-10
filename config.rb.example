@@ -18,7 +18,7 @@ $coreos_version = '>=493.0.0'
 
 $coreos_instances = 1
 
-$shared_folder_name = 'shared'
+$shared_folder_name = false
 
 $coreos_docker_port = 4243
 $coreos_peer_port = 7001
@@ -31,12 +31,11 @@ $coreos_etcd_key = false
 $serial_logging = false
 
 
-# You can add own options for Docker containers provisioning during CoreOS cluster startup
-$docker = <<DOCKER
-images: ["ubuntu"]
-DOCKER
-
 # You can add own script for provisioning during CoreOS cluster startup
 $script = <<SCRIPT
-echo CoreOS cluster ready to use
+echo "Deploy MySQL DB Server just for fun"
+  docker run --name mysql-01 -v /shared/mysql-01:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -d mysql
+echo "Deploy Wordpress just for fun"
+  docker run --name wordpress-01 -v /shared/www:/var/www --link mysql-01:mysql -p 8080:80 -d wordpress
+echo "CoreOS cluster ready to use"
 SCRIPT

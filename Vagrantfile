@@ -39,11 +39,6 @@ $coreos_etcd_key = false
 $serial_logging = false
 
 
-# You can add own options for Docker containers provisioning during CoreOS cluster startup
-$docker = <<DOCKER
-images: ["ubuntu"]
-DOCKER
-
 # You can add own script for provisioning during CoreOS cluster startup
 $script = <<SCRIPT
 echo CoreOS cluster ready to use
@@ -176,10 +171,6 @@ Vagrant.configure('2') do |config|
       # Deploy user-data config file
         config.vm.provision 'shell', inline: "echo '#{user_data_output}' > /tmp/vagrantfile-user-data", privileged: true
         config.vm.provision 'shell', inline: "mv /tmp/vagrantfile-user-data /var/lib/coreos-vagrant/", privileged: true
-      # Docker provisioning
-      config.vm.provision 'docker' do |d|
-        $docker
-      end
       # Execute custome script
       config.vm.provision 'shell', inline: $script, privileged: true
 
