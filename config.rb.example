@@ -18,7 +18,7 @@ $coreos_version = '>=493.0.0'
 
 $coreos_instances = 1
 
-$shared_folder_name = false
+$shared_folder_name = 'shared'
 
 $coreos_docker_port = 4243
 $coreos_peer_port = 7001
