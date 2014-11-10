@@ -2,24 +2,20 @@
 
 coreos:
   etcd:
-      name: <%= vm_name %>
-      discovery: <%= $coreos_etcd_key %>
+    name: <%= vm_name %>
+    discovery: <%= $coreos_etcd_key %>
+    addr: $public_ipv4:4001
+    peer-addr: $public_ipv4:7001
+
   fleet:
-      metadata: name=<%= vm_name %>
+    metadata: name=<%= vm_name %>
+    public-ip: $public_ipv4
+
   units:
     - name: etcd.service
       command: start
-
     - name: fleet.service
       command: start
-#      runtime: yes
-#      content: |
-#        [Unit]
-#        Description=fleet
-#        [Service]
-#        Environment=FLEET_PUBLIC_IP=$public_ipv4
-#        ExecStart=/usr/bin/fleet
-#
     - name: docker-tcp.socket
       command: start
       enable: true
