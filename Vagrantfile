@@ -15,7 +15,7 @@ require 'erb'
 # Define Vagrant minimal version
 Vagrant.require_version '>= 1.6.5'
 
-# Vagrant vagrant-hostmanager plugin must be installed for support hosts auto-update.
+# Vagrant vagrant-hostmanager plugin must be installed for support /etc/hosts file auto-update.
 # Required plugin will be installed automatically.
 # Read more at https://github.com/smdahlen/vagrant-hostmanager
 $hostmanager = false
@@ -56,17 +56,18 @@ COREOS_CLOUD_USER_DATA = File.join(File.dirname(__FILE__), 'user-data.erb')
 COREOS_CONFIG = File.join(File.dirname(__FILE__), 'config.rb')
 
 # Override configuration from external configuration file
-require COREOS_CONFIG if File.exist?(COREOS_CONFIG)
-
-
-# Add Vagrant hostmanager plugin support if required
-system 'vagrant plugin install vagrant-hostmananger' if $hostmanager unless Vagrant.has_plugin?('vagrant-hostmanager')
-# Add VMWare Fusion support if required
-system 'vagrant plugin install vmware_fusion' if ENV['VAGRANT_DEFAULT_PROVIDER'] == 'vmware_fusion' unless Vagrant.has_plugin?('vmware_fusion')
-
+if File.exist?(COREOS_CONFIG)
+  require COREOS_CONFIG
+  puts "Custom configuration loaded from file " + COREOS_CONFIG
+end
 
 # Configure shared folder
-COREOS_CLOUD_SHARED_PATH = File.realpath($shared_folder_name) until [nil, 0, false].include?($shared_folder_name)
+if ARGV[0] == 'up' || ARGV[0] == 'provision'
+  if $shared_folder_name
+    $coreos_cloud_shared_path = File.join(File.dirname(__FILE__), $shared_folder_name)
+    puts "Host workstation shared folder path: " + $coreos_cloud_shared_path
+  end
+end
 
 # CoreOS etcd key can be predefined with env variable COREOS_ETCD_DISCOVERY_KEY or config.rb
 if [nil, 0, false].include?($coreos_etcd_key) && (ARGV[0] == 'up' || ARGV[0] == 'provision')
@@ -76,7 +77,14 @@ if [nil, 0, false].include?($coreos_etcd_key) && (ARGV[0] == 'up' || ARGV[0] == 
   else
     $coreos_etcd_key = ENV['COREOS_ETCD_DISCOVERY_KEY']
   end
+  puts "CoreOS etcd key: " + $coreos_etcd_key
 end
+
+# Add Vagrant hostmanager plugin support if required
+system 'vagrant plugin install vagrant-hostmananger' if $hostmanager unless Vagrant.has_plugin?('vagrant-hostmanager')
+# Add VMWare Fusion support if required
+system 'vagrant plugin install vmware_fusion' if ENV['VAGRANT_DEFAULT_PROVIDER'] == 'vmware_fusion' unless Vagrant.has_plugin?('vmware_fusion')
+
 
 
 ################################################################################
@@ -97,6 +105,7 @@ Vagrant.configure('2') do |config|
 
   # Resolve Vagrant plugin conflict
   config.vbguest.auto_update = false if Vagrant.has_plugin?('vagrant-vbguest')
+
 
   # Deploy CoreOS cluster
   (1..$coreos_instances).each do |i|
@@ -145,10 +154,12 @@ Vagrant.configure('2') do |config|
         config.hostmanager.include_offline = true
       end
 
-      # Share folder over NFS with CoreOS
-      until [nil, 0, false].include?($shared_folder_name)
-        if File.exist?(COREOS_CLOUD_SHARED_PATH)
-          config.vm.synced_folder '#{COREOS_CLOUD_SHARED_PATH}', '/' + $shared_folder_name, id: 'core', nfs: true, mount_options: ['nolock,vers=3,udp']
+     # Share folder over NFS with CoreOS
+      if ARGV[0] == 'up' || ARGV[0] == 'provision'
+        if $shared_folder_name
+          if File.exist?($coreos_cloud_shared_path)
+            config.vm.synced_folder $coreos_cloud_shared_path, '/' + $shared_folder_name, id: 'core', nfs: true, mount_options: ['nolock,vers=3,udp']
+          end
         end
       end
 
