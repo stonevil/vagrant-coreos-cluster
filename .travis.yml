@@ -1,0 +1,4 @@
+language: ruby
+script: "gem install tailor && tailor"
+rvm:
+  - 2.1.3p242
