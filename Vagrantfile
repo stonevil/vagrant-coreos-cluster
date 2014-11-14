@@ -53,14 +53,14 @@ COREOS_CONFIG = File.join(File.dirname(__FILE__), 'config.rb')
 # Override configuration from external configuration file
 if File.exist?(COREOS_CONFIG)
   require COREOS_CONFIG
-  puts "Custom configuration loaded from file " + COREOS_CONFIG
+  puts 'Custom configuration loaded from file ' + COREOS_CONFIG
 end
 
 # Configure shared folder
 if ARGV[0] == 'up' || ARGV[0] == 'provision'
   if $shared_folder_name
     $coreos_cloud_shared_path = File.join(File.dirname(__FILE__), $shared_folder_name)
-    puts "Host workstation shared folder path: " + $coreos_cloud_shared_path
+    puts 'Host workstation shared folder path: ' + $coreos_cloud_shared_path
   end
 end
 
@@ -72,7 +72,7 @@ if [nil, 0, false].include?($coreos_etcd_key) && (ARGV[0] == 'up' || ARGV[0] == 
   else
     $coreos_etcd_key = ENV['COREOS_ETCD_DISCOVERY_KEY']
   end
-  puts "CoreOS etcd key: " + $coreos_etcd_key
+  puts 'CoreOS etcd key: ' + $coreos_etcd_key
 end
 
 # Add Vagrant hostmanager plugin support if required
@@ -169,8 +169,8 @@ Vagrant.configure('2') do |config|
       end
 
       # Deploy user-data config file
-        config.vm.provision 'shell', inline: "echo '#{user_data_output}' > /tmp/vagrantfile-user-data", privileged: true
-        config.vm.provision 'shell', inline: "mv /tmp/vagrantfile-user-data /var/lib/coreos-vagrant/", privileged: true
+      config.vm.provision 'shell', inline: "echo '#{user_data_output}' > /tmp/vagrantfile-user-data", privileged: true
+      config.vm.provision 'shell', inline: 'mv /tmp/vagrantfile-user-data /var/lib/coreos-vagrant/', privileged: true
       # Execute custome script
       config.vm.provision 'shell', inline: $script, privileged: true
 
