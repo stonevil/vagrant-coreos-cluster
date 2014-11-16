@@ -1,4 +1,4 @@
 language: ruby
 script: "gem install tailor && tailor"
 rvm:
-  - latest
+  - 2.1.4
