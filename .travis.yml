@@ -9,6 +9,7 @@ install:
   - curl -sSL https://get.docker.com/ubuntu/ | sudo sh
   - sudo apt-get install -q dpkg-dev virtualbox-dkms --fix-missing
   - sudo dpkg-reconfigure virtualbox-dkms
+  - sudo /etc/init.d/vboxdrv setup
   - sudo VBoxManage --version
   - sudo wget -nv https://dl.bintray.com/mitchellh/vagrant/vagrant_1.6.5_x86_64.deb
   - sudo dpkg -i vagrant_1.6.5_x86_64.deb
