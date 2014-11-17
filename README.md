@@ -1,6 +1,8 @@
+[![Build Status](https://secure.travis-ci.org/stonevil/vagrant-coreos-cluster.png?branch=master)](https://travis-ci.org/stonevil/vagrant-coreos-cluster)
+
 # CoreOS Vagrant cluster
 
-This repo provides a Vagrantfile to create a CoreOS virtual cluster using the VirtualBox or VMWare software hypervisor.
+Just another repo with Vagrant template to create a CoreOS virtual cluster using the VirtualBox OR VMWare Fusion software hypervisor. After setup is complete you will have a single OR multiply CoreOS virtual machine's running on your host workstation.
 
 ## Setup
 
@@ -21,7 +23,11 @@ cd vagrant-coreos-cluster
 ```
 For VirtualBox
 vagrant up
-OR VMWare Fusion
+```
+OR
+
+```
+VMWare Fusion
 vagrant up --provider vmware_fusion
 
 vagrant ssh
