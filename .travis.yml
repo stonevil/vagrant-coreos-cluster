@@ -1,5 +1,4 @@
 language: ruby
-script: "gem install tailor && tailor"
 rvm:
   - 2.1.4
 
@@ -8,12 +7,13 @@ install:
   - sudo apt-get install linux-image-generic-lts-raring linux-headers-generic-lts-raring
   - sudo apt-get install apt-transport-https
   - curl -sSL https://get.docker.com/ubuntu/ | sudo sh
-  - sudo apt-get install -q virtualbox --fix-missing
+  - sudo apt-get install -q dpkg-dev virtualbox-dkms --fix-missing
   - sudo wget -nv https://dl.bintray.com/mitchellh/vagrant/vagrant_1.6.5_x86_64.deb
   - sudo dpkg -i vagrant_1.6.5_x86_64.deb
   - sudo vagrant plugin install vagrant-plugin-bundler
     sudo VBoxManage --version
 script:
+  - gem install tailor && tailor
   - sudo vagrant up
 after-script:
   - sudo vagrant halt
