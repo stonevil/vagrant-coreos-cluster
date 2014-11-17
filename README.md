@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/stonevil/vagrant-coreos-cluster.png?label=ready&title=Ready)](https://waffle.io/stonevil/vagrant-coreos-cluster)
 # CoreOS Vagrant cluster
 
 This repo provides a Vagrantfile to create a CoreOS virtual cluster using the VirtualBox or VMWare software hypervisor.
