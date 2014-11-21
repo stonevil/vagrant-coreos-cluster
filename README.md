@@ -1,5 +1,7 @@
 [![Build Status](https://secure.travis-ci.org/stonevil/vagrant-coreos-cluster.png?branch=master)](https://travis-ci.org/stonevil/vagrant-coreos-cluster)
 
+[![Code Climate](https://codeclimate.com/github/stonevil/vagrant-coreos-cluster/badges/gpa.svg)](https://codeclimate.com/github/stonevil/vagrant-coreos-cluster)
+
 [![Stories in Ready](https://badge.waffle.io/stonevil/vagrant-coreos-cluster.png?label=ready&title=Ready)](https://waffle.io/stonevil/vagrant-coreos-cluster)
 
 
