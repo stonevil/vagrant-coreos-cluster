@@ -1,0 +1,6 @@
+dependencies:
+  post:
+    - gem install tailor
+test:
+  override:
+    - tailor
