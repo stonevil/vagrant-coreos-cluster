@@ -86,16 +86,16 @@ system 'vagrant plugin install vmware_fusion' if ENV['VAGRANT_DEFAULT_PROVIDER']
 Vagrant.configure('2') do |config|
   config.vm.box = 'coreos-%s' % $coreos_channel
   config.vm.box_version = $coreos_version
+  config.vm.box_url = 'http://%s.release.core-os.net/amd64-usr/current/coreos_production_vagrant.json' % $coreos_channel
 
   # Get CoreOS box
   config.vm.provider :virtualbox do |v|
-    config.vm.box_url = 'http://%s.release.core-os.net/amd64-usr/current/coreos_production_vagrant.json' % $coreos_channel
     # Force VN do not install vb guest additions
     v.check_guest_additions = false
     v.functional_vboxsf = false
   end
-  config.vm.provider :vmware_fusion do
-    config.vm.box_url = 'http://%s.release.core-os.net/amd64-usr/current/coreos_production_vagrant_vmware_fusion.json' % $coreos_channel
+  config.vm.provider :vmware_fusion do |vb, override|
+    override.vm.box_url = 'http://%s.release.core-os.net/amd64-usr/current/coreos_production_vagrant_vmware_fusion.json' % $coreos_channel
   end
 
   # Resolve Vagrant plugin conflict
