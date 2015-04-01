@@ -100,6 +100,10 @@ Vagrant.configure('2') do |config|
   config.vm.provider :vmware_fusion do |vb, override|
     override.vm.box_url = 'http://%s.release.core-os.net/amd64-usr/current/coreos_production_vagrant_vmware_fusion.json' % $coreos_channel
   end
+  config.vm.provider :vmware_workstation do |vb, override|
+    override.vm.box_url = 'http://%s.release.core-os.net/amd64-usr/current/coreos_production_vagrant_vmware_fusion.json' % $coreos_channel
+  end
+
 
   # Resolve Vagrant plugin conflict
   config.vbguest.auto_update = false if Vagrant.has_plugin?('vagrant-vbguest')
@@ -137,6 +141,12 @@ Vagrant.configure('2') do |config|
           vb.customize ['modifyvm', :id, '--uartmode1', serialFile]
         end
         config.vm.provider :vmware_fusion do |v|
+          v.vmx['serial0.present'] = 'TRUE'
+          v.vmx['serial0.fileType'] = 'file'
+          v.vmx['serial0.fileName'] = serialFile
+          v.vmx['serial0.tryNoRxLoss'] = 'FALSE'
+        end
+        config.vm.provider :vmware_workstation do |v|
           v.vmx['serial0.present'] = 'TRUE'
           v.vmx['serial0.fileType'] = 'file'
           v.vmx['serial0.fileName'] = serialFile
