@@ -77,10 +77,11 @@ end
 
 # Add Vagrant hostmanager plugin support if required
 system 'vagrant plugin install vagrant-hostmananger' if $hostmanager unless Vagrant.has_plugin?('vagrant-hostmanager')
-# Add VMWare Fusion support if required
+# Add VMWare Fusion OR Workstation support if required
 system 'vagrant plugin install vmware_fusion' if ENV['VAGRANT_DEFAULT_PROVIDER'] == 'vmware_fusion' unless Vagrant.has_plugin?('vagrant-vmware-fusion')
 system 'vagrant plugin install vmware_fusion' if ENV['VAGRANT_DEFAULT_PROVIDER'] == 'vmware_workstation' unless Vagrant.has_plugin?('vagrant-vmware-workstation')
 
+# Install necessary plugins
 system 'vagrant plugin install vagrant-berkshelf' unless Vagrant.has_plugin?('vagrant-berkshelf')
 system 'vagrant plugin install vagrant-omnibus' unless Vagrant.has_plugin?('vagrant-omnibus')
 
