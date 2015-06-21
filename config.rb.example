@@ -14,7 +14,7 @@ $hostmanager = false
 
 # Default CoreOS Cluster configuration
 $coreos_channel = 'alpha'
-$coreos_version = '>=493.0.0'
+$coreos_version = '>=717.0.0'
 
 $coreos_instances = 1
 
@@ -30,6 +30,8 @@ $coreos_etcd_key = false
 # Enable only for debuging purpose. This functionality highly slow down you computer!
 $serial_logging = false
 
+# SSH port increment variable for Azure
+$ssh_port = 9000
 
 # You can add own script for provisioning during CoreOS cluster startup
 $script = <<SCRIPT
