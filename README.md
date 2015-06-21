@@ -50,3 +50,7 @@ By setting the `$coreos_docker_port` configuration value you can forward a local
 Then you can then use the `docker` command from your local shell by setting `DOCKER_HOST`:
 
     export DOCKER_HOST=tcp://localhost:4243
+
+## TODO
+
+* Update README. Add description about cloud services usage
