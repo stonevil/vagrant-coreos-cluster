@@ -1,0 +1,41 @@
+# Project related
+config.rb
+
+# Temp files
+*~
+*#
+.#*
+\#*#
+.*.sw[a-z]
+*.un~
+
+# Vagrant
+.vagrant
+
+# Chef
+/cookbooks
+metadata.json
+Berksfile.lock
+
+# Golang
+_vendor
+Gomfile.lock
+
+# Bundler
+Gemfile.lock
+bin/*
+.bundle/*
+
+# Kitchen CI
+.kitchen/
+.kitchen.local.yml
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
