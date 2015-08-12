@@ -102,7 +102,7 @@ else
 end
 
 # Install required provider plugins
-$provider_plugin = $providers.fetch($provider, 'virtualbox')
+$provider_plugin = $providers.fetch($provider)
 system("vagrant plugin install #{$provider_plugin}") unless Vagrant.has_plugin?$provider_plugin || exit! if !$provider == 'virtualbox'
 
 
@@ -208,8 +208,7 @@ Vagrant.configure("2") do |config|
         when 'vmware_fusion', 'vmware_workstation'
           ip = "172.17.10.#{i+100}"
       end
-
-      config.vm.network :private_network, ip: ip, auto_config: true
+      config.vm.network :private_network, ip: ip
 
       # Expose CoreOS Docker API over TCP
       config.vm.network 'forwarded_port', guest: 4243, host: $coreos_docker_port + i - 1, auto_correct: true if $coreos_docker_port
@@ -217,7 +216,6 @@ Vagrant.configure("2") do |config|
       config.vm.network 'forwarded_port', guest: 4001, host: $coreos_etcd_port + i - 1, auto_correct: true if $coreos_etcd_port
       # Expose CoreOS peer address over TCP
       config.vm.network 'forwarded_port', guest: 7001, host: $coreos_peer_port + i - 1, auto_correct: true if $coreos_peer_port
-
 
       # Manage GUI
       case $provider
@@ -267,14 +265,14 @@ Vagrant.configure("2") do |config|
           # Digital Ocean
           ["digital_ocean"].each do |digital_ocean|
             config.vm.provider digital_ocean do |d, override|
-              d.token = ENV['DIGITALOCEAN_TOKEN']
-              d.image = ENV['DIGITALOCEAN_IMAGE']
-              d.region = ENV['DIGITALOCEAN_REGION']
-              d.size = ENV['DIGITALOCEAN_SIZE']
+              d.token = ENV['DO_TOKEN']
+              d.image = ENV['DO_IMAGE']
+              d.region = ENV['DO_REGION']
+              d.size = ENV['DO_SIZE']
               d.root_username = 'core'
               d.private_networking = true
               override.ssh.username = 'core'
-              override.ssh.private_key_path = ENV['DIGITALOCEAN_SSH_KEY']
+              override.ssh.private_key_path = ENV['DO_OVERRIDE_KEY']
               d.user_data = user_data_output
               d.setup = false
             end
@@ -317,6 +315,8 @@ Vagrant.configure("2") do |config|
       case $provider
         when 'virtualbox', 'vmware_fusion', 'vmware_workstation'
           config.vm.synced_folder $coreos_cloud_shared_path, '/' + $shared_folder_name, id: 'core', nfs: true, mount_options: ['nolock,vers=3,udp']
+        else
+          config.vm.synced_folder '.', '/vagrant', disabled: true
       end if File.exist?($coreos_cloud_shared_path) if $shared_folder_name if ARGV[0] == 'up' || ARGV[0] == 'provision'
 
       # Deploy user-data config file
@@ -325,7 +325,7 @@ Vagrant.configure("2") do |config|
           config.vm.provision 'shell', inline: 'mkdir -p /var/lib/coreos-install/', :privileged => true
           config.vm.provision 'shell', inline: "echo '#{user_data_output}' > /tmp/vagrantfile-user-data", privileged: true
           config.vm.provision 'shell', inline: 'mv /tmp/vagrantfile-user-data /var/lib/coreos-install/user_data', privileged: true
-        when 'aws', 'google', 'digital_ocean', 'vmware_fusion', 'vmware_workstation'
+        when 'vmware_fusion', 'vmware_workstation'
           config.vm.provision 'shell', inline: "echo '#{user_data_output}' > /tmp/vagrantfile-user-data", privileged: true
           config.vm.provision 'shell', inline: 'mv /tmp/vagrantfile-user-data /var/lib/coreos-vagrant/', privileged: true
       end
